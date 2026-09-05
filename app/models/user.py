@@ -1,5 +1,6 @@
 from sqlalchemy import Column, Integer, String, DateTime
 from datetime import datetime
+from sqlalchemy import Column, Integer, String, Text, DateTime
 
 from app.database.database import Base
 
@@ -16,3 +17,9 @@ class User(Base):
     role = Column(String(50), nullable=False)
 
     created_at = Column(DateTime, default=datetime.utcnow)
+
+    public_key = Column(Text, nullable=True)
+
+    private_key = Column(Text, nullable=True)
+
+    key_nonce = Column(Text, nullable=True)

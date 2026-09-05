@@ -2,7 +2,8 @@ from app.database.database import Base, engine
 
 # Import all models here
 from app.models.user import User
-
+from app.models.patient import Patient
+from app.models.medical_record import MedicalRecord
 
 def create_database():
     print("Creating database...")
