@@ -7,6 +7,7 @@ from app.schemas.patient import (
     PatientCreate,
     PatientUpdate,
     PatientResponse,
+    PatientRegisterResponse,
 )
 from app.crud.patient import (
     create_patient,
@@ -23,7 +24,7 @@ router = APIRouter(
 )
 
 
-@router.post("/", response_model=PatientResponse)
+@router.post("/", response_model=PatientRegisterResponse)
 def register_patient(
     patient: PatientCreate,
     db: Session = Depends(get_db),
@@ -99,4 +100,4 @@ def remove_patient(
 
     return {
         "message": "Patient deleted successfully"
-    }
+    }

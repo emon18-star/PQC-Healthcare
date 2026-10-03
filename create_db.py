@@ -4,6 +4,8 @@ from app.database.database import Base, engine
 from app.models.user import User
 from app.models.patient import Patient
 from app.models.medical_record import MedicalRecord
+from app.models.audit_log import AuditLog
+from app.models.access_request import AccessRequest
 
 def create_database():
     print("Creating database...")

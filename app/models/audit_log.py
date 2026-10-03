@@ -45,3 +45,14 @@ class AuditLog(Base):
         DateTime,
         default=datetime.utcnow,
     )
+
+    # Tamper-Evident Cryptographic Hash Chaining (TE-PQAC)
+    previous_hash = Column(
+        String(64),
+        nullable=True,
+    )
+
+    current_hash = Column(
+        String(64),
+        nullable=True,
+    )

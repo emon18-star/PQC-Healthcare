@@ -1,6 +1,7 @@
 import base64
 import statistics
 import time
+import sys
 
 from dotenv import load_dotenv
 
@@ -12,8 +13,8 @@ from app.models.medical_record import MedicalRecord
 from app.core.mediator import Mediator
 
 
-ITERATIONS = 1000
-RECORD_ID = 10
+ITERATIONS = int(sys.argv[1]) if len(sys.argv) > 1 and sys.argv[1].isdigit() else 100
+RECORD_ID = int(sys.argv[2]) if len(sys.argv) > 2 and sys.argv[2].isdigit() else None
 
 
 def benchmark(function, iterations=ITERATIONS):
@@ -60,17 +61,24 @@ def main():
     try:
 
         # ==========================================================
-        # LOAD REAL MEDICAL RECORD
+        # LOAD REAL MEDICAL RECORD FROM SUPABASE
         # ==========================================================
 
-        record = (
-            db.query(MedicalRecord)
-            .filter(MedicalRecord.id == RECORD_ID)
-            .first()
-        )
+        if RECORD_ID is not None:
+            record = (
+                db.query(MedicalRecord)
+                .filter(MedicalRecord.id == RECORD_ID)
+                .first()
+            )
+        else:
+            record = (
+                db.query(MedicalRecord)
+                .order_by(MedicalRecord.id.desc())
+                .first()
+            )
 
         if record is None:
-            print(f"\nERROR: Medical record {RECORD_ID} not found.")
+            print("\nERROR: No real medical records found in Supabase database.")
             return
 
         doctor = (

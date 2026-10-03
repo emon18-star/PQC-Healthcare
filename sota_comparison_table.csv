@@ -1,0 +1,6 @@
+Framework / Paper,PQC Scheme,Field Granularity,Encryption (ms),Decryption (ms),Delegation (ms),Ciphertext Size (KB),Audit Trail Mechanism,Audit Latency (1k events),Trust Model / Architecture
+CITADEL (Frontiers 2024),CRYSTALS-Kyber + Dilithium,Coarse (Document-level),12.4 ms,18.6 ms,"1,850.0 ms (On-chain)",4.8 KB,Blockchain Smart Contract,22.8 seconds,Decentralized (High gas/latency)
+Lattice CP-ABE (IEEE Access 2024),Lattice-based LWE,Fine-Grained (Boolean Tree),68.5 ms,94.2 ms,145.0 ms (Attribute update),56.4 KB (High blowup),Not Supported,N/A,Serverless (Heavy math)
+Lattice PRE (IEEE TIFS 2024),Lattice Proxy Re-Encryption,Coarse (Monolithic),24.8 ms,31.5 ms,38.6 ms (Proxy transform),8.2 KB,Not Supported,N/A,Semi-trusted Proxy (Noise growth)
+Monolithic Hybrid (Frontiers 2026),ML-KEM-768 + AES-256,None (All-or-nothing),1.35 ms,1.50 ms,42.1 ms (Full re-encrypt),3.1 KB,Traditional DB Log (Mutable),N/A (No integrity),Central Server
+Proposed System (Our Work),ML-KEM-768 + HKDF-SHA256 + AES,Fine-Grained (5 Clinical Fields),1.67 ms,1.89 ms,1.35 ms (Zero-Payload O(1)),2.3 KB (Optimal),Intra-DB Cryptographic Hash-Chain,0.00145 seconds (1.45 ms),Mediated Zero-Trust (High speed)

@@ -20,6 +20,16 @@ from app.models.access_request import AccessRequest
 # Alembic Config object
 config = context.config
 
+from dotenv import load_dotenv
+load_dotenv()
+
+# Override sqlalchemy.url with DATABASE_URL from .env if present
+env_db_url = os.getenv("DATABASE_URL")
+if env_db_url:
+    if env_db_url.startswith("postgres://"):
+        env_db_url = env_db_url.replace("postgres://", "postgresql://", 1)
+    config.set_main_option("sqlalchemy.url", env_db_url)
+
 # Configure logging
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)

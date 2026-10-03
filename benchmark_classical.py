@@ -2,6 +2,7 @@ import os
 import time
 import statistics
 import base64
+import sys
 
 from cryptography.hazmat.primitives.asymmetric import rsa, padding
 from cryptography.hazmat.primitives import hashes
@@ -12,7 +13,7 @@ from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 # CONFIGURATION
 # ============================================================
 
-ITERATIONS = 1000
+ITERATIONS = int(sys.argv[1]) if len(sys.argv) > 1 and sys.argv[1].isdigit() else 100
 
 
 # ============================================================

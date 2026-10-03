@@ -28,3 +28,17 @@ class PatientResponse(PatientBase):
 
     class Config:
         from_attributes = True
+
+
+class PatientCredentials(BaseModel):
+    user_id: int
+    username: str
+    temp_password: str
+    phone: str
+    sms_status: str
+    message: str
+
+
+class PatientRegisterResponse(BaseModel):
+    patient: PatientResponse
+    credentials: PatientCredentials

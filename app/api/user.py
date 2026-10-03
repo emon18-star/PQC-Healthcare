@@ -33,7 +33,8 @@ def register_user(
 
 @router.get("/", response_model=list[UserResponse])
 def read_users(
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_role("admin"))
 ):
     return get_users(db)
 

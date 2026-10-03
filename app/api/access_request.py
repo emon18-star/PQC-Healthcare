@@ -13,6 +13,7 @@ from app.schemas.access_request import (
 from app.crud.access_request import (
     create_access_request,
     get_pending_requests,
+    get_all_requests,
     approve_request,
     reject_request,
 )
@@ -21,6 +22,16 @@ router = APIRouter(
     prefix="/access-requests",
     tags=["Access Requests"],
 )
+
+
+@router.get("/", response_model=list[AccessRequestResponse])
+def all_requests(
+    skip: int = 0,
+    limit: int = 50,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_role("admin,doctor")),
+):
+    return get_all_requests(db, skip=skip, limit=limit)
 
 
 @router.post("/", response_model=AccessRequestResponse)

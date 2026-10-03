@@ -6,29 +6,30 @@ import os
 
 load_dotenv()
 
-DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///database.db")
+DATABASE_URL = os.getenv("DATABASE_URL")
+
+if not DATABASE_URL:
+    raise RuntimeError(
+        "DATABASE_URL is not set. Please configure the Supabase PostgreSQL connection string in your .env file."
+    )
 
 # Normalize legacy postgres:// scheme to postgresql:// (required by SQLAlchemy 2.0)
 if DATABASE_URL.startswith("postgres://"):
     DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
 
-if DATABASE_URL.startswith("sqlite"):
-    engine = create_engine(
-        DATABASE_URL,
-        connect_args={"check_same_thread": False},
-    )
-else:
-    # PostgreSQL configuration with connection pooling & ping verification
-    engine = create_engine(
-        DATABASE_URL,
-        pool_pre_ping=True,
-        pool_size=10,
-        max_overflow=20,
-    )
+# Supabase / PostgreSQL configuration with optimized connection pooling
+engine = create_engine(
+    DATABASE_URL,
+    pool_pre_ping=False,
+    pool_size=20,
+    max_overflow=30,
+    pool_recycle=300,
+)
 
 SessionLocal = sessionmaker(
     autocommit=False,
     autoflush=False,
+    expire_on_commit=False,
     bind=engine
 )
 

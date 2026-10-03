@@ -36,16 +36,19 @@ def add_medical_record(
     return create_medical_record(
         db=db,
         medical_record=medical_record,
-        created_by=current_user.id
+        created_by=current_user.id,
+        doctor=current_user,
     )
 
 
 @router.get("/", response_model=list[MedicalRecordResponse])
 def read_medical_records(
+    skip: int = 0,
+    limit: int = 50,
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_role("doctor"))
+    current_user: User = Depends(require_role("doctor,admin"))
 ):
-    return get_medical_records(db)
+    return get_medical_records(db, skip=skip, limit=limit)
 
 
 @router.get("/{record_id}", response_model=MedicalRecordResponse)
@@ -135,5 +138,24 @@ def read_decrypted_record(
             status_code=404,
             detail="Medical record not found"
         )
-
     return record
+
+
+@router.post("/{record_id}/migrate-pqc")
+def migrate_record_to_pqc(
+    record_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_role("doctor,admin"))
+):
+    from app.crud.medical_record import migrate_legacy_record_to_pqc
+    success = migrate_legacy_record_to_pqc(db, record_id)
+    if not success:
+        raise HTTPException(
+            status_code=400,
+            detail="Record cannot be migrated (already PQC-secured or invalid creator key)."
+        )
+    return {
+        "status": "SUCCESS",
+        "record_id": record_id,
+        "message": f"Medical record {record_id} successfully migrated to Post-Quantum ML-KEM-768 envelope with zero downtime."
+    }

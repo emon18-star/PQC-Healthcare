@@ -2,6 +2,7 @@ from sqlalchemy import (
     Column,
     Integer,
     String,
+    Text,
     DateTime,
     ForeignKey,
 )
@@ -57,3 +58,19 @@ class AccessRequest(Base):
         DateTime(timezone=True),
         nullable=True,
     )
+
+    # Zero-Payload-Decryption Delegated PQC Parameters
+    delegated_kem_ciphertext = Column(
+        Text,
+        nullable=True,
+    )
+
+    delegated_encrypted_aes_key = Column(
+        Text,
+        nullable=True,
+    )
+
+    delegated_aes_key_nonce = Column(
+        Text,
+        nullable=True,
+    )

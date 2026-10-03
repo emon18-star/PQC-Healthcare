@@ -1,6 +1,7 @@
 import json
 import statistics
 import time
+import sys
 
 from dotenv import load_dotenv
 
@@ -27,7 +28,7 @@ from app.core.mediator import Mediator
 # CONFIGURATION
 # ============================================================
 
-ITERATIONS = 10000
+ITERATIONS = int(sys.argv[1]) if len(sys.argv) > 1 and sys.argv[1].isdigit() else 100
 
 TEST_TEXT = (
     "Patient has hypertension and diabetes. "
@@ -204,6 +205,8 @@ class TestMedicalRecord:
     Test object matching the fields expected by Mediator.
     """
 
+    patient_id = 1
+
     diagnosis = (
         "Hypertension and Type 2 Diabetes"
     )
@@ -226,6 +229,7 @@ class TestMedicalRecord:
 
 
 medical_record = TestMedicalRecord()
+
 
 
 medical_encryption_result = benchmark(
